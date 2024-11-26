@@ -1,0 +1,84 @@
+{
+    "PostProcess": {
+        "heatfluid": {
+            "Exports": {
+                "fields": ["fluid.velocity", "fluid.pressure", "heat.temperature", "pid", "fluid.vorticity"],
+                "expr": {
+                    "pressure_Pa": "fluid_P+2066.49671-postprocess_heatfluid_measures_Statistics_ah_pressure_min:postprocess_heatfluid_measures_Statistics_ah_pressure_min:fluid_P",
+                    "pressure_mmHg": "fluid_P+15.5-postprocess_heatfluid_measures_Statistics_ah_pressure_min:postprocess_heatfluid_measures_Statistics_ah_pressure_min:fluid_P",
+                    "gravity": "{(9.80665*cos(pi/3*t))*(t<3.0001)-9.80665*(t>3.0001),0,(9.80665*sin(pi/3*t))*(t<3)}:t"
+                }
+            },
+            "Measures": {
+                "Statistics": {
+                    "eye_temperature": {
+                        "type":["min","max","mean"],
+                        "expr": "heat_T:heat_T"
+                    },
+                    "cornea_temperature":
+                    {
+                        "type":["min","max","mean"],
+                        "expr": "heat_T:heat_T",
+                        "markers":"Cornea"
+                    },
+                    "ah_temperature":
+                    {
+                        "type":["min","max","mean"],
+                        "expr": "heat_T:heat_T",
+                        "markers":"AqueousHumor"
+                    },
+                    "ah_velocity":
+                    {
+                        "type":["min","max","mean"],
+                        "expr": "fluid_U_magnitude:fluid_U_magnitude",
+                        "markers":"AqueousHumor"
+                    },
+                    "ah_pressure":
+                    {
+                        "type":["min","max","mean"],
+                        "expr": "fluid_P:fluid_P",
+                        "markers":"AqueousHumor"
+                    }
+                }/*,
+                "Points": {
+                    "horizontal_line": {
+                        "over_geometry": {
+                            "segment": {
+                                "point1": "{-0.0129297, 0, 0}",
+                                "point2": "{-0.00939599, 0, 0}",
+                                "n_points": 100
+                            }
+                        },
+                        "expressions": {
+                            "local_cell_Reynolds": "materials_AqueousHumor_rho*fluid_U_magnitude*h/materials_AqueousHumor_mu:materials_AqueousHumor_rho:fluid_U_magnitude:materials_AqueousHumor_mu:h",
+                            "local_cell_Prandtl": "materials_AqueousHumor_mu*materials_AqueousHumor_Cp*h/materials_AqueousHumor_k:materials_AqueousHumor_mu:materials_AqueousHumor_Cp:materials_AqueousHumor_k:h"
+                        },
+                        "fields": ["fluid.velocity","heat.temperature"],
+                        "include_coordinates":1,
+                        "output": { "type":"table" }
+                    }
+                }*/
+            }
+        },
+        "fluid":{
+            "Exports": {
+                "fields": ["trace.wall-shear-stress", "trace.normal-stress"],
+                "expr": {"gravity": "{(9.80665*cos(pi/3*t))*(t<3.0001)-9.80665*(t>3.0001),0,(9.80665*sin(pi/3*t))*(t<3)}:t"}
+            }/*,
+            "Measures": {
+                "Statistics": {
+                    "ah_wall_shear_stress": {
+                        "type":["min","max","mean"],
+                        "expr": "trace_wall_shear_stress:trace_wall_shear_stress",
+                        "markers":["AqueousHumor", "AqueousHumor_Cornea", "AqueousHumor_Iris"]
+                    },
+                    "ah_normal_stress": {
+                        "type":["min","max","mean"],
+                        "expr": "trace_normal_stress:trace_normal_stress",
+                        "markers":["AqueousHumor", "AqueousHumor_Cornea", "AqueousHumor_Iris"]
+                    }
+                }
+            }*/
+        }
+    }
+}

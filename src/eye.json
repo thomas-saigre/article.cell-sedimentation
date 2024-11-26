@@ -1,0 +1,102 @@
+{
+    "Name": "Eye Heat-fluid",
+    "ShortName":"EyeHeatFluid",
+    "Models":
+    {
+        "fluid":
+        {
+            "materials": "AqueousHumor",
+            "equations": "Navier-Stokes"
+        },
+        "heat":
+        {
+            "materials": ["Cornea", "Sclera", "AqueousHumor", "Lens", "VitreousHumor", "Iris", "Lamina", "Choroid", "Retina", "OpticNerve"],
+            "equations": "Heat"
+        }
+    },
+
+    "Parameters":
+    {
+        "h_bl": 65,         // [W / m^2 / K]
+        "h_amb": 10,        // [W / m^2 / K]
+        "h_r": 6,           // [W / m^2 / K]
+        "T_bl": 310.15,     // [K] 36.85°C
+        "T_amb": 294,       // [K] 25 °C
+        "E": 40,            // [W / m^2]
+        "sigma": 5.67e-8,   // [W / (m^2 * K^4)]
+        "epsilon": 0.974,   // [-]
+        "rho_Cornea": 1050, // [kg / m^3]
+        "rho_Lens": 1000,   // [kg / m^3]
+        "k_lens": 0.40,     // [ W / m / K]
+        "mu_AH": "1e-3",    // [N s / m^2]
+        "beta_AH": "3.3e-4",// [1 / K]
+        "T_rotation": "3",  // [s]
+        "g": "-9.80665"     // [m / s^2]
+    },
+
+    "Materials":
+    {
+        "Cornea":
+        {
+            "k":"0.58", // [W / (m * K)]
+            "rho":"rho_Cornea:rho_Cornea", // [kg / m^3]
+            "Cp":"4178" // [J / (kg * K)]
+        },
+        "Sclera":
+        {
+            "k": "1.0042", // [W / (m * K)]
+            "rho": "1050", // [kg / m^3]
+            "Cp": "3180" // [J / (kg * K)]
+        },
+        "AqueousHumor":
+        {
+            "k":"0.578", // [W / (m * K)]
+            "rho":"996", // [kg / m^3]
+            "Cp":"3997", // [J / (kg * K)]
+            "mu":"0.00074", // [N s / m^2]
+            "beta":"0.000337" // [1 / K]
+        },
+        "Lens":
+        {
+            "k":"k_lens:k_lens", // [W / (m * K)]
+            "rho":"rho_Lens:rho_Lens", // [kg / m^3]
+            "Cp":"3000" // [J / (kg * K)]
+        },
+        "VitreousHumor":
+        {
+            "k":"0.603", // [W / (m * K)]
+            "rho":"1100", // [kg / m^3]
+            "Cp":"4178" //[J / (kg * K)]
+        },
+        "Iris":
+        {
+            "k":"1.0042", // [W / (m * K)]
+            "rho":"1050", // [kg / m^3]
+            "Cp":"3180" // [J / (kg * K)]
+        },
+        "Lamina":
+        {
+            "k":"1.0042", // [W / (m * K)]
+            "rho":"1050", // [kg / m^3]
+            "Cp":"3180" // [J / (kg * K)]
+        },
+        "Choroid":
+        {
+            "k":"0.52", // [W / (m * K)]
+            "rho":"1050", // [kg / m^3]
+            "Cp":"3180" // [J / (kg * K)]
+        },
+        "Retina":
+        {
+            "k":"0.52", // [W / (m * K)]
+            "rho":"1050", // [kg / m^3]
+            "Cp":"3180" // [J / (kg * K)]
+        },
+        "OpticNerve":
+        {
+            "k":"1.0042", // [W / (m * K)]
+            "rho":"1050", // [kg / m^3]
+            "Cp":"3180" // [J / (kg * K)]
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+  "BoundaryConditions":
+  {
+    "fluid":
+    {
+      "velocity":
+      {
+        "dirichlet":
+        {
+          "markers": ["AqueousHumor_Cornea", "AqueousHumor_Iris", "AqueousHumor_Lens", "AqueousHumor_VitreousHumor", "AqueousHumor_Sclera"],
+          "expr": "{0,0,0}"
+        }
+      }
+    },
+    "heat":
+    {
+      "convective_heat_flux":
+      {
+        "BC_Sclera":
+        {
+          "h":"h_bl:h_bl",
+          "Text":"T_bl:T_bl"
+        },
+        "BC_OpticNerve":
+        {
+          "h":"h_bl:h_bl",
+          "Text":"T_bl:T_bl"
+        }
+      },
+      "flux":
+      {
+        "BC_Cornea": {
+            "expr":"-(h_amb * (heat_T - T_amb) + sigma * epsilon * (heat_T * heat_T * heat_T * heat_T - T_amb * T_amb * T_amb * T_amb) + E):heat_T:T_amb:h_amb:epsilon:sigma:E"
+        }
+      }
+    }
+  }
+}

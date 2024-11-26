@@ -1,0 +1,38 @@
+= Run the toolbox simulation
+:hide-uri-scheme:
+
+== Setup
+
+* Set the meshes in the `mesh` directory, see <<add citation>> to get the meshes. Default mesh is `Mr/M4`.
+To run smoothly, the directory structure should be as follows: `mesh/Mr/M4/...`.
+* Make sure Feelpp toolboxe `heatfluid` is installed https://docs.feelpp.org/home/index.html.
+
+
+== Run the simulation
+
+=== With slurm
+
+Set-up position and desired mesh in the `run.slurm` file. Then, submit the job with the following command:
+
+[source, bash]
+----
+sbatch run.slurm
+----
+
+
+=== Without slurm
+
+Run by_hand the command of the `run.slurm` file.
+
+[source, bash]
+----
+POSITION=prone  # prone supine standing
+MESH_INDEX=M4
+
+mpirun -np 128 feelpp_toolbox_heatfluid \
+        --config-files eye-${POSITION}.cfg pc_${SOLVER_TYPE}.cfg \
+        --heat-fluid.json.patch='{ "op": "replace", "path": "/Meshes/heatfluid/Import/filename", "value": "$cfgdir/mesh/Mr/'${MESH_INDEX}'/Eye_Mesh3D_p$np.json" }' \
+        --heat-fluid.scalability-save=1 --heat-fluid.heat.scalability-save=1 --heat-fluid.fluid.scalability-save=1
+----
+
+To run the time-dependant model, add `ts.cfg` at the end of the second line (before the `\`).

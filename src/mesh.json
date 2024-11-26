@@ -1,0 +1,13 @@
+{
+  "Meshes":
+  {
+    "heatfluid":
+    {
+      "Import":
+      {
+        "filename": "$cfgdir/mesh/Mr/M5/Eye_Mesh3D_p$np.json",
+        "partition": 0
+      }
+    }
+  }
+}
