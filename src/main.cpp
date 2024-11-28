@@ -34,31 +34,35 @@ runApplicationHeatFluid()
                                         Lagrange<OrderV, Vectorial,Continuous,PointSetFekete>,
                                         Lagrange<OrderP, Scalar,Continuous,PointSetFekete> > model_fluid_type;
     typedef FeelModels::HeatFluid< model_heat_type,model_fluid_type> model_type;
-    std::shared_ptr<model_type> heatFluid( new model_type("heat-fluid") );
-    heatFluid->init();
-    heatFluid->printAndSaveInfo();
-
-    heatFluid->startTimeStep();
+    std::shared_ptr<model_type> heatFluidSupine( new model_type("heat-fluid") ),
+                                heatFluid( new model_type("heat-fluid") );
+    heatFluidSupine->init();
+    heatFluidSupine->setStationary( true );
+    heatFluidSupine->fluidModel()->setStationary( true );
+    heatFluidSupine->heatModel()->setStationary( true );
+    heatFluidSupine->printAndSaveInfo();
 
     std::ofstream wss_file("wss.csv");
     wss_file << "time,domain,AqueousHumor_Cornea,AqueousHumor_Iris\n";
 
-    if (heatFluid->worldComm().isMasterRank())
+    if (Environment::isMasterRank())
     {
+        wss_file << "time,domain,AqueousHumor_Cornea,AqueousHumor_Iris\n";
+
         std::cout << "============================================================\n";
         std::cout << "Initial condition : Supine position (t = " << heatFluid->time() << ")\n";
         std::cout << "============================================================\n";
     }
-    heatFluid->solve();
-    heatFluid->exportResults();
+    heatFluidSupine->solve();
+    heatFluidSupine->exportResults();
 
     if (Environment::isMasterRank())
         wss_file << heatFluid->time();
 
     for ( std::string const& name : { "", "AqueousHumor_Cornea", "AqueousHumor_Iris"} )
     {
-        auto wss = heatFluid->fluidModel()->computeWallShearStress( name );
-        auto wss_mean = mean( _range = elements(heatFluid->fluidModel()->functionSpaceVelocity()->template meshSupport<0>()),
+        auto wss = heatFluidSupine->fluidModel()->computeWallShearStress( name );
+        auto wss_mean = mean( _range = elements(heatFluidSupine->fluidModel()->functionSpaceVelocity()->template meshSupport<0>()),
                               _expr = sqrt(inner(idv(wss), idv(wss))) );
 
         if (Environment::isMasterRank())
@@ -70,7 +74,16 @@ runApplicationHeatFluid()
 
     std::string gravity_expr;
 
-    for (  ; !heatFluid->timeStepBase()->isFinished(); heatFluid->updateTimeStep() )
+    auto const& u = heatFluidSupine->fluidModel()->fieldVelocity();
+    auto const& p = heatFluidSupine->fluidModel()->fieldPressure();
+    auto const& T = heatFluidSupine->heatModel()->fieldTemperature();
+    *heatFluid->fluidModel()->fieldVelocityPtr() = u;
+    *heatFluid->fluidModel()->fieldPressurePtr() = p;
+    *heatFluid->heatModel()->fieldTemperaturePtr() = T;
+
+    heatFluid->init();
+
+    for ( heatFluid->startTimeStep() ; !heatFluid->timeStepBase()->isFinished(); heatFluid->updateTimeStep() )
     {
         if (heatFluid->worldComm().isMasterRank())
         {
@@ -116,7 +129,6 @@ main( int argc, char** argv )
     heatfluidoptions.add_options()
         ("case.dimension", Feel::po::value<int>()->default_value( 3 ), "dimension")
         ("case.discretization", Feel::po::value<std::string>()->default_value( "P1-P2P1" ), "discretization : P1-P2P1")
-        ("marker", Feel::po::value<std::string>()->default_value( "" ), "marker")
      ;
 
 	Environment env( _argc=argc, _argv=argv,

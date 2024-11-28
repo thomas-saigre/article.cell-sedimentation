@@ -1,0 +1,12 @@
+{
+    "files.associations": {
+        "*.json": "jsonc",
+        "*.dat": "csv (whitespace)",
+        "*.pgf": "tex",
+        "*.pdf_tex": "tex",
+        ".py.in": "Python",
+        "*.tikz": "tex",
+        "*.slurm": "shellscript",
+        "tuple": "cpp"
+    }
+}
