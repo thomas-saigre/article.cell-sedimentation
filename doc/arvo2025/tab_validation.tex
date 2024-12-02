@@ -1,0 +1,53 @@
+\documentclass{standalone}
+\usepackage{tabularray}
+\usepackage{csquotes}
+\usepackage[natbib, defernumbers=true, backend=biber, style=alphabetic, eprint=false, maxbibnames=99]{biblatex}
+\addbibresource{biblio.bib}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{siunitx}
+\newcommand{\shortcite}[1]{\citeauthor{#1} (\citeyear{#1}).}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+
+\begin{document}
+
+\begin{tikzpicture}
+    \node (tab) at (0,0){
+        \begin{tblr}{colspec={|c|c|c|}}
+        \hline
+        \SetRow{azure7} \textbf{Boundary conditions} & \textbf{Orientation} & \textbf{WSS (\si{\pascal})}\\
+        \hline
+        \SetRow{azure9} Inlet/outlet flow\footnotemark[1] & n/a & $[10^{-5}, \pgfmathprintnumber{1.7e-3}]$ \\
+        \hline
+            Inlet flow/outlet pressure\footnotemark[2] & n/a & $[0, \pgfmathprintnumber{1.36e-3}]$ \\
+        \hline
+            \SetRow{azure9} No-slip velocity\footnotemark[3] & Standing & $[0, \pgfmathprintnumber{1.63e-3}]$ \\
+        \hline
+            \multirow{2}{*}{Inlet/outlet flow}\footnotemark[4]
+                & Standing & $[\pgfmathprintnumber{5e-4}, \pgfmathprintnumber{3.5e-3}]$ \\
+                & Supine   & $[10^{-4}, 10^{-3}]$ \\
+        \hline
+        \SetRow{azure9} \multirow{3}{*}{No-slip velocity}\footnotemark[5]
+                & Standing & [0, \pgfmathprintnumber{7.7e-3}] \\
+        \SetRow{azure9}  & Supine   & [0, \pgfmathprintnumber{9.5e-5}] \\
+        \SetRow{azure9}  & Prone    & [0, \pgfmathprintnumber{7.2e-5}] \\
+            %$[0, \pgfmathprintnumber{7.7e-3}]$ & $[0, \pgfmathprintnumber{7.2e-5}]$ & $[0, \pgfmathprintnumber{9.5e-5}]$ \\
+        \hline
+        \end{tblr}
+    };
+
+    % \begin{small}
+    \node[anchor=north west, scale=0.5735, yshift=6pt] (footnote) at (tab.south west) {
+        \footnotemark[1] \shortcite{fernandez-vigo_computational_2018}
+        \footnotemark[2] \shortcite{kudsieh_numerical_2020}
+        \footnotemark[3] \shortcite{repetto_phakic_2015}
+        \footnotemark[4] \shortcite{qin_aqueous_2021}
+        \footnotemark[5] Current model
+    };
+    % \end{small}
+\end{tikzpicture}
+
+
+
+\end{document}

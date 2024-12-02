@@ -1,0 +1,1 @@
+{"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\Q[2][] #10=0/( - )= 0/( - )= graphics[#1] #2;\\E$"}
