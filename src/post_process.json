@@ -61,6 +61,11 @@
             }
         },
         "fluid":{
+            "Save": {
+                "Fields": {
+                    "names": "all"
+                }
+            },
             "Exports": {
                 "fields": ["trace.wall-shear-stress", "trace.normal-stress"],
                 "expr": {"gravity": "{(9.80665*cos(pi/3*t))*(t<3.0001)-9.80665*(t>3.0001),0,(9.80665*sin(pi/3*t))*(t<3)}:t"}
@@ -79,6 +84,13 @@
                     }
                 }
             }*/
+        },
+        "heat":{
+            "Save": {
+                "Fields":{
+                    "names": "all"
+                }
+            }
         }
     }
 }

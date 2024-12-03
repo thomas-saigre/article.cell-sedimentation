@@ -9,3 +9,6 @@
 *.run.xml
 *.synctex.gz
 *.pdf
+
+build/*
+src/feelppdb/*

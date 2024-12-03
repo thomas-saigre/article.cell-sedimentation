@@ -1,0 +1,36 @@
+{
+    "InitialConditions":
+    {
+        "heatfluid":
+        {
+            "temperature":
+            {
+                "File":
+                {
+                    "ic_temp":
+                    {
+                        "filename": "/data/home/saigre/pulications/article.cell-sedimentation.arvo2025/src/feelppdb/init/M1-P1-P2P1/294/np_1/heat.save/temperature.h5"
+                    }
+                }
+            },
+            "velocity":
+            {
+                "File":{
+                    "ic_velocity":
+                    {
+                        "filename": "/data/home/saigre/pulications/article.cell-sedimentation.arvo2025/src/feelppdb/init/M1-P1-P2P1/294/np_1/fluid.save/velocity.h5"
+                    }
+                }
+            },
+            "pressure":
+            {
+                "File":{
+                    "ic_pressure":
+                    {
+                        "filename": "/data/home/saigre/pulications/article.cell-sedimentation.arvo2025/src/feelppdb/init/M1-P1-P2P1/294/np_1/fluid.save/pressure.h5"
+                    }
+                }
+            }
+        }
+    }
+}
