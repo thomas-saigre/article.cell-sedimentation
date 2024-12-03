@@ -1,4 +1,7 @@
 \documentclass[a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
 \usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{xcolor}
@@ -6,21 +9,26 @@
 \usepackage{booktabs}
 \usepackage{tabularray}
 \usepackage{multirow}
+\usepackage{paralist}
 \usepackage{pgfplots}
 \pgfplotsset{compat=newest}
 
+\usepackage[english]{babel}
+
 \usepackage{siunitx}
 \DeclareSIUnit\mmHg{mmHg}
+\newcommand{\fpp}{Feel\nolinebreak\hspace{-.05em}\raisebox{.4ex}{\tiny\bf +}\nolinebreak\hspace{-.10em}\raisebox{.4ex}{\tiny\bf +}}
+
 
 \usepackage{hyperref}
-\usepackage{cleveref}
-\title{Template Repository for Articles}
-\author{
-    Christophe Prud'homme\footnotemark[1],
-    Thomas Saigre\footnotemark[1],
-    Sangly P. Srinivas\footnotemark[2],
-    Marcela Szopos\footnotemark[3]
-}
+\usepackage[capitalise]{cleveref}
+\title{Abstract}
+% \author{
+%     Christophe Prud'homme\footnotemark[1],
+%     Thomas Saigre\footnotemark[1],
+%     Sangly P. Srinivas\footnotemark[2],
+%     Marcela Szopos\footnotemark[3]
+% }
 
 \usepackage{csquotes}
 \usepackage[natbib, defernumbers=true, backend=biber, style=alphabetic, eprint=false, maxbibnames=99]{biblatex}
@@ -56,35 +64,110 @@
 \makeatother
 
 
+\newcommand{\figwss}[7][west]{%
+\vspace{-0.5cm}
+\begin{tikzpicture}
+\begin{axis}[
+    colorbar,
+    colormap={Rainbow Desaturated}{
+        rgb255(0cm)=(70,70,219);
+        rgb255(0.143cm)=(0,0,91);
+        rgb255(0.285cm)=(0,255,255);
+        rgb255(0.429cm)=(0,128,0);
+        rgb255(0.571cm)=(255,255,0);
+        rgb255(0.714cm)=(255,97,0);
+        rgb255(0.857cm)=(106,0,0);
+        rgb255(1cm)=(223,77,77);
+    },
+    enlargelimits=false,
+    colorbar horizontal,
+    point meta min=#3,
+    point meta max=#4,
+    axis line style = {draw=none},
+    tick style = {draw=none},
+    xtick = \empty, ytick = \empty,
+    colorbar style={
+        xlabel = {$\|\vec{\tau}_w\|$ [\si{\Pa}]},
+        height=0.05*\pgfkeysvalueof{/pgfplots/parent axis height},
+        width=0.9*\pgfkeysvalueof{/pgfplots/parent axis width},
+        at={(0.5,-0.02)},
+        anchor=center,
+        tick label style={font=\footnotesize},
+        #6
+    },
+    width=#5
+]
+    \addplotgraphicsnatural[xmin=0, xmax=1, ymin=0, ymax=1]{#2}
+
+    \begin{scope}[xshift=0, yshift=100]
+        \draw[->] #7 node[midway, anchor=#1] {$\vec{g}$};
+    \end{scope}
+
+    \begin{scope}[xshift=120, yshift=100]
+        \draw[->, red] (0.1, 0.1) -- (0.09, 0.) node[pos=1, anchor=west] {$x$};
+        \draw[->, green!60!black] (0.1, 0.1) -- (0.05, 0.04) node[pos=1, anchor=north east] {$y$};
+        \draw[->, blue] (0.1, 0.1) -- (0.02, 0.13) node[pos=1, anchor=east] {$z$};
+    \end{scope}
+
+\end{axis}
+\end{tikzpicture}
+}
+
+
 \begin{document}
 \renewcommand{\thefootnote}{\fnsymbol{footnote}} % Use symbols globally
 
 
 \maketitle
 
-\footnotetext[1]{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France}
-\footnotetext[2]{Indiana University Bloomington, Bloomington, IN, USA}
-\footnotetext[3]{Université Paris Cité, CNRS, MAP5, F-75006 Paris, France}
+% \footnotetext[1]{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France}
+% \footnotetext[2]{Indiana University Bloomington, Bloomington, IN, USA}
+% \footnotetext[3]{Université Paris Cité, CNRS, MAP5, F-75006 Paris, France}
 
 \section*{Purpose}
 
 
 
+
 \section*{Methods}
 
+Our model is based on the Navier-Stokes equations for incompressible flow in the Boussinesq approximation to model the aquehous humor (AH) flow in the anterior and posterior chambers of the eye.
+In this approximation, the position of the subject is taken into account by the gravity term $\vec{g}$.
+This flow is coupled to the overall heat transfert in the eye, taking into account heat exchanges on one hand with the surrounding tissues and on the other hand with the external environment.
+At this point, the production and drainage of AH is not taken into account, as previous studies have indicated that buoyancy is the dominant
+mechanism driving convective motion in the AH regardless of postural orientation~\cite{ooi_simulation_2008}.
+Hence, no-slip boundary conditions are applied on the walls of the PC and AC, so the AH flow is driven by thermal and gravitational effects.
 
+The coupled system is solved using the advanced computational methods implemented inside the heatfluid toolbox of the \fpp{} library~\cite{prudhomme_feelppfeelpp_2024}, allowing the user to set up the patient-specific and external parameters, as well as to vary the position of the subject.
 
 
 
 \section*{Results}
 
+The developped model is validated against results from literature and the results are presented in \cref{tab:validation}.
+Despite difference in the boundary conditions considered to model the flow of AH, our results show a similar order of magnitude for the WSS compared to the literature.
+
+We present results for a subject with nominal parameters in both supine and prone positions in \cref{fig:supine} and \cref{fig:prone}, respectively.
+These results enlighten the importance of the positions of the subject on the distribution of the WSS on the corneal endothelium,
 
 
+Moreover, the impact of the ambient temperature $T_\text{amb}$ on the WSS is presented in \cref{tab:wss}.
+Three ambient temperature are considered:
+\begin{inparaenum}[\it (i)]
+\item the nominal temperature value $T_\text{amb} = \SI{25}{\celsius}$,
+\item a lower value $T_\text{amb} = \SI{15}{\celsius}$, and
+\item a higher value $T_\text{amb} = \SI{33}{\celsius}$.
+\end{inparaenum}
+We measure numerically the average magnitude of the WSS on three zones of the border of the AC and PC, namely
+\begin{inparaenum}[\it (i)]
+\item the corneal endothelium,
+\item the iris, and
+\item the whole domain.
+\end{inparaenum}
+The main result from this study is that when the ambiant temperature increases, the WSS magnitude decreases, and vice versa.
 
-\begin{figure}
+\begin{table}
     \centering
-
-    \def\subfigwidth{\textwidth}
 
     \begin{subtable}{0.5\textwidth}
         \includegraphics[width=\textwidth]{tab_validation}
@@ -98,168 +181,35 @@
         \caption{Mean of the magnitude of the WSS for different zones of the eye.}
         \label{tab:wss}
     \end{subtable}
+    \caption{Validation and impact of the ambient temperature on the WSS.}
+\end{table}
+
+\begin{figure}
+    \def\subfigwidth{\textwidth}
 
     \begin{subfigure}{0.49\textwidth}
         \centering
-        \begin{tikzpicture}
-            \begin{axis}[
-                colorbar,
-                colormap/jet, % Choose the colormap you prefer
-                % axis equal image,
-                enlargelimits=false,
-                colorbar horizontal,
-                point meta min=15.417566299438477,
-                point meta max=15.585275650024414,
-                axis line style = {draw=none},
-                tick style = {draw=none},
-                xtick = \empty, ytick = \empty,
-                colorbar style={
-                    % xlabel style={
-                    %     at={(0.5,1.1)},
-                    %     anchor=south,
-                    % },
-                    xlabel = {$p$ [\si{\mmHg}]},
-                    height=0.05*\pgfkeysvalueof{/pgfplots/parent axis height},
-                    width=0.9*\pgfkeysvalueof{/pgfplots/parent axis width},
-                    at={(0.5,-0.02)},
-                    anchor=center,
-                    tick label style={font=\footnotesize},
-                },
-                colorbar/draw/.append code={
-                    \begin{axis}[
-                        colormap={Gray and Red}{
-                            rgb255(-1cm)=(26,26,26);
-                            rgb255(-0.87451cm)=(58,58,58);
-                            rgb255(-0.74902cm)=(91,91,91);
-                            rgb255(-0.623529cm)=(128,128,128);
-                            rgb255(-0.498039cm)=(161,161,161);
-                            rgb255(-0.372549cm)=(191,191,191);
-                            rgb255(-0.247059cm)=(215,215,215);
-                            rgb255(-0.121569cm)=(236,236,236);
-                            rgb255(0.00392157cm)=(254,254,253);
-                            rgb255(0.129412cm)=(253,231,218);
-                            rgb255(0.254902cm)=(250,204,180);
-                            rgb255(0.380392cm)=(244,170,136);
-                            rgb255(0.505882cm)=(228,128,101);
-                            rgb255(0.631373cm)=(208,84,71);
-                            rgb255(0.756863cm)=(185,39,50);
-                            rgb255(0.882353cm)=(147,14,38);
-                            rgb255(1cm)=(103,0,31);
-                        },
-                        colorbar horizontal,
-                        point meta min=1.6125707421871079e-9,
-                        point meta max=0.000007417459292689545,
-                        every colorbar,
-                        anchor=center,
-                        colorbar shift,
-                        colorbar=false,
-                        xlabel = {$\vec{u}$ [\si{\meter\per\second}]},
-                        height=0.05*\pgfkeysvalueof{/pgfplots/parent axis height},
-                        width=0.9*\pgfkeysvalueof{/pgfplots/parent axis width},
-                        at={(0.5,-0.1*3.5*\pgfkeysvalueof{/pgfplots/parent axis height})},
-                        tick label style={font=\footnotesize},
-                    ]
-                        \pgfkeysvalueof{/pgfplots/colorbar addplot}
-                    \end{axis}
-                    },
-                width=\subfigwidth
-            ]
-                \addplotgraphicsnatural[xmin=0, xmax=1, ymin=0, ymax=1]{flowsupine.png}
-
-                \draw[->] (0.1, 0.88) -- (0.2, 0.88) node[midway, anchor=south] {$\vec{g}$};
-
-                \draw[->, red] (0.1, 0.1) -- (0.2, 0.1) node[pos=1, anchor=north] {$x$};
-                \draw[->, green!60!black] (0.1, 0.1) -- (0.1, 0.2) node[pos=1, anchor=east] {$y$};
-                \draw[blue] (0.1, 0.1) node {$\odot$};
-                \draw[blue] (0.1, 0.1) node[anchor=north east] {$z$};
-            \end{axis}
-        \end{tikzpicture}
-        \caption{Velocity and pressure simulated for a subject in supine position.}
+        \figwss{prone.png}{0}{0.00007180730182807427}{\subfigwidth}{xtick={0,0.00002,0.00004,0.00006,0.00007}}{(0.09, 0.) -- (0.1, 0.1)}
+        \caption{Prone position.}
         \label{fig:supine}
     \end{subfigure}
     %
     \begin{subfigure}{0.49\textwidth}
         \centering
-        \begin{tikzpicture}
-            \begin{axis}[
-                colorbar,
-                colormap/jet, % Choose the colormap you prefer
-                % axis equal image,
-                enlargelimits=false,
-                colorbar horizontal,
-                point meta min=15.414600372314453,
-                point meta max=15.582489967346191,
-                axis line style = {draw=none},
-                tick style = {draw=none},
-                xtick = \empty, ytick = \empty,
-                colorbar style={
-                    % xlabel style={
-                    %     at={(0.5,1.1)},
-                    %     anchor=south,
-                    % },
-                    xlabel = {$p$ [\si{\mmHg}]},
-                    height=0.05*\pgfkeysvalueof{/pgfplots/parent axis height},
-                    width=0.9*\pgfkeysvalueof{/pgfplots/parent axis width},
-                    at={(0.5,-0.02)},
-                    anchor=center,
-                    tick label style={font=\footnotesize},
-                },
-                colorbar/draw/.append code={
-                    \begin{axis}[
-                        colormap={Gray and Red}{
-                            rgb255(-1cm)=(26,26,26);
-                            rgb255(-0.87451cm)=(58,58,58);
-                            rgb255(-0.74902cm)=(91,91,91);
-                            rgb255(-0.623529cm)=(128,128,128);
-                            rgb255(-0.498039cm)=(161,161,161);
-                            rgb255(-0.372549cm)=(191,191,191);
-                            rgb255(-0.247059cm)=(215,215,215);
-                            rgb255(-0.121569cm)=(236,236,236);
-                            rgb255(0.00392157cm)=(254,254,253);
-                            rgb255(0.129412cm)=(253,231,218);
-                            rgb255(0.254902cm)=(250,204,180);
-                            rgb255(0.380392cm)=(244,170,136);
-                            rgb255(0.505882cm)=(228,128,101);
-                            rgb255(0.631373cm)=(208,84,71);
-                            rgb255(0.756863cm)=(185,39,50);
-                            rgb255(0.882353cm)=(147,14,38);
-                            rgb255(1cm)=(103,0,31);
-                        },
-                        colorbar horizontal,
-                        point meta min=0,
-                        point meta max=0.0000062121127024231835,
-                        every colorbar,
-                        anchor=center,
-                        colorbar shift,
-                        colorbar=false,
-                        xlabel = {$\vec{u}$ [\si{\meter\per\second}]},
-                        height=0.05*\pgfkeysvalueof{/pgfplots/parent axis height},
-                        width=0.9*\pgfkeysvalueof{/pgfplots/parent axis width},
-                        at={(0.5,-0.1*3.5*\pgfkeysvalueof{/pgfplots/parent axis height})},
-                        tick label style={font=\footnotesize},
-                    ]
-                        \pgfkeysvalueof{/pgfplots/colorbar addplot}
-                    \end{axis}
-                    },
-                width=\subfigwidth
-            ]
-                \addplotgraphicsnatural[xmin=0, xmax=1, ymin=0, ymax=1]{flowprone.png}
-
-                \draw[->] (0.2, 0.88) -- (0.1, 0.88) node[midway, anchor=south] {$\vec{g}$};
-
-                \draw[->, red] (0.1, 0.1) -- (0.2, 0.1) node[pos=1, anchor=north] {$x$};
-                \draw[->, green!60!black] (0.1, 0.1) -- (0.1, 0.2) node[pos=1, anchor=east] {$y$};
-                \draw[blue] (0.1, 0.1) node {$\odot$};
-                \draw[blue] (0.1, 0.1) node[anchor=north east] {$z$};
-            \end{axis}
-        \end{tikzpicture}
-        \caption{Velocity and pressure simulated for a subject in prone position.}
+        \figwss{supine.png}{0}{0.00009524954933823035}{\subfigwidth}{xtick={0,0.00002,0.00004,0.00006,0.00008,0.00009}}{(0.1, 0.1) -- (0.09, 0.)}
+        \caption{Supine position.}
         \label{fig:prone}
     \end{subfigure}
+    \caption{Distribution of the wall shear stress $\vec{\tau}_w$ magnitude on the corneal endothelium for various postural orientations.}
 \end{figure}
 
 
+
 \section*{Conclusions}
+
+
+\nocite{*}
+\printbibliography
 
 
 
