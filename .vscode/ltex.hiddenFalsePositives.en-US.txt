@@ -1,1 +1,5 @@
 {"rule":"COMMA_PARENTHESIS_WHITESPACE","sentence":"^\\Q[2][] #10=0/( - )= 0/( - )= graphics[#1] #2;\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qprone.png 0 0.00007180730182807427  xtick=0,0.00002,0.00004,0.00006,0.00007 (0.09, 0.)\\E$"}
+{"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qsupine.png 0 0.00009524954933823035  xtick=0,0.00002,0.00004,0.00006,0.00008,0.00009 (0.1, 0.1) – (0.09, 0.)\\E$"}
+{"rule":"WHITESPACE_RULE","sentence":"^\\Qprone.png 0 0.00007180730182807427  xtick=0,0.00002,0.00004,0.00006,0.00007 (0.09, 0.)\\E$"}
+{"rule":"WHITESPACE_RULE","sentence":"^\\Qsupine.png 0 0.00009524954933823035  xtick=0,0.00002,0.00004,0.00006,0.00008,0.00009 (0.1, 0.1) – (0.09, 0.)\\E$"}
