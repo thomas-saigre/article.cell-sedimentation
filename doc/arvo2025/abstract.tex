@@ -5,7 +5,7 @@
 \usepackage{fullpage}
 \usepackage{graphicx}
 \usepackage{xcolor}
-\usepackage{subcaption}
+\usepackage{subfigure}
 \usepackage{booktabs}
 \usepackage{tabularray}
 \usepackage{multirow}
@@ -22,17 +22,19 @@
 
 \usepackage{hyperref}
 \usepackage[capitalise]{cleveref}
-\title{Abstract}
-% \author{
-%     Christophe Prud'homme\footnotemark[1],
-%     Thomas Saigre\footnotemark[1],
-%     Sangly P. Srinivas\footnotemark[2],
-%     Marcela Szopos\footnotemark[3]
-% }
+\title{Effect of Cooling of the Ocular Surface on Endothelial Cell Sedimentation in Cell Injection Therapy: Insights from Computational Fluid Dynamics}
+\author{
+    Thomas Saigre\footnotemark[1],
+    Vincent Chabannes\footnotemark[1],
+    Giovanna Guidoboni\footnotemark[2],\\
+    Christophe Prud'homme\footnotemark[1],
+    Marcela Szopos\footnotemark[3],
+    Sangly P. Srinivas\footnotemark[4]
+}
 
-\usepackage{csquotes}
-\usepackage[natbib, defernumbers=true, backend=biber, style=alphabetic, eprint=false, maxbibnames=99]{biblatex}
-\addbibresource{biblio.bib}
+% \usepackage{csquotes}
+% \usepackage[natbib, defernumbers=true, backend=biber, style=alphabetic, eprint=false, maxbibnames=99]{biblatex}
+% \addbibresource{biblio.bib}
 
 \makeatletter
 \newcommand\addplotgraphicsnatural[2][]{%
@@ -120,96 +122,49 @@
 
 \maketitle
 
-% \footnotetext[1]{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France}
-% \footnotetext[2]{Indiana University Bloomington, Bloomington, IN, USA}
-% \footnotetext[3]{Université Paris Cité, CNRS, MAP5, F-75006 Paris, France}
+\footnotetext[1]{Cemosis, IRMA UMR 7501, Université de Strasbourg, CNRS, France}
+\footnotetext[2]{University of Maine, Orono, ME, United States}
+\footnotetext[3]{Université Paris Cité, CNRS, MAP5, F-75006 Paris, France}
+\footnotetext[4]{Indiana University Bloomington, Bloomington, IN, USA}
+
+
 
 \section*{Purpose}
 
+Cell injection therapy is a promising treatment for Fuchs endothelial corneal dystrophy by delivering cultured human corneal endothelial cells into the anterior chamber (AC).
+After injection, patients are rotated from a supine to a prone position for over three hours to promote sedimentation.
+This study aims to develop a computational framework to understand how convection currents influence the wall shear stress (WSS), thereby informing strategies to optimize sedimentation and improve therapeutic outcomes.
 
 
+\section*{Method}
 
-\section*{Methods}
-
-Our model is based on the Navier-Stokes equations for incompressible flow in the Boussinesq approximation to model the aquehous humor (AH) flow in the anterior and posterior chambers of the eye.
-In this approximation, the position of the subject is taken into account by the gravity term $\vec{g}$.
-This flow is coupled to the overall heat transfert in the eye, taking into account heat exchanges on one hand with the surrounding tissues and on the other hand with the external environment.
-At this point, the production and drainage of AH is not taken into account, as previous studies have indicated that buoyancy is the dominant
-mechanism driving convective motion in the AH regardless of postural orientation~\cite{ooi_simulation_2008}.
-Hence, no-slip boundary conditions are applied on the walls of the PC and AC, so the AH flow is driven by thermal and gravitational effects.
-
-The coupled system is solved using the advanced computational methods implemented inside the heatfluid toolbox of the \fpp{} library~\cite{prudhomme_feelppfeelpp_2024}, allowing the user to set up the patient-specific and external parameters, as well as to vary the position of the subject.
-
+A computational fluid dynamics framework investigated aqueous humor (AH) flow, focusing on velocity and WSS distributions.
+The model governed by the Navier-Stokes equations with the Boussinesq approximation and gravitational effect account for heat exchange between the eye, surrounding tissues, and ambient environment.
+Posture (supine and prone) and ambient temperature (\qty{15}{\degreeCelsius}, \qty{25}{\degreeCelsius}, and \qty{33}{\degreeCelsius}) were varied to assess their impact.
+Elevated WSS may impede cell adhesion, while efficient mixing can enhance sedimentation and redistribution of injected cells.
+AH secretion and outflow were neglected, as previous work (Ooi et al., \emph{Comput. Biol. Med.}, 2008) indicated buoyancy-driven flows dominate regardless of posture.
+Simulations were performed using the \fpp{} framework (docs.feelpp.org), employing no-slip boundary conditions and solving for AH velocity and WSS distributions.
 
 
 \section*{Results}
 
-The developped model is validated against results from literature and the results are presented in \cref{tab:validation}.
-Despite difference in the boundary conditions considered to model the flow of AH, our results show a similar order of magnitude for the WSS compared to the literature.
+The simulations revealed that orientation and ambient temperature influence AH flows and WSS (\cref{fig:arvo_flows}).
+Changes from supine to prone altered gravitational alignment, reducing AH velocities and affecting sedimentation.
+At cooler ocular surface temperatures (\qty{15}{\degreeCelsius}), enhanced AH circulation increased WSS by up to \qty{83.4}{\percent}, promoting more uniform cell dispersion.
+Warmer conditions (\qty{33}{\degreeCelsius}) reduced WSS by \qty{46}{\percent}, resulting in less uniform sedimentation patterns potentially hindering optimal cell adhesion (\cref{tab:arvo_wss}).
 
-We present results for a subject with nominal parameters in both supine and prone positions in \cref{fig:supine} and \cref{fig:prone}, respectively.
-These results enlighten the importance of the positions of the subject on the distribution of the WSS on the corneal endothelium,
 
-
-Moreover, the impact of the ambient temperature $T_\text{amb}$ on the WSS is presented in \cref{tab:wss}.
-Three ambient temperature are considered:
-\begin{inparaenum}[\it (i)]
-\item the nominal temperature value $T_\text{amb} = \SI{25}{\celsius}$,
-\item a lower value $T_\text{amb} = \SI{15}{\celsius}$, and
-\item a higher value $T_\text{amb} = \SI{33}{\celsius}$.
-\end{inparaenum}
-We measure numerically the average magnitude of the WSS on three zones of the border of the AC and PC, namely
-\begin{inparaenum}[\it (i)]
-\item the corneal endothelium,
-\item the iris, and
-\item the whole domain.
-\end{inparaenum}
-The main result from this study is that when the ambiant temperature increases, the WSS magnitude decreases, and vice versa.
-
-\begin{table}
-    \centering
-
-    \begin{subtable}{0.5\textwidth}
-        \includegraphics[width=\textwidth]{tab_validation}
-        \caption{Comparison of the magnitude of the WSS results with results from the literature.}
-        \label{tab:validation}
-    \end{subtable}
-    %
-    \begin{subtable}{0.45\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{tab_wss}
-        \caption{Mean of the magnitude of the WSS for different zones of the eye.}
-        \label{tab:wss}
-    \end{subtable}
-    \caption{Validation and impact of the ambient temperature on the WSS.}
-\end{table}
-
-\begin{figure}
-    \def\subfigwidth{\textwidth}
-
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \figwss{prone.png}{0}{0.00007180730182807427}{\subfigwidth}{xtick={0,0.00002,0.00004,0.00006,0.00007}}{(0.09, 0.) -- (0.1, 0.1)}
-        \caption{Prone position.}
-        \label{fig:supine}
-    \end{subfigure}
-    %
-    \begin{subfigure}{0.49\textwidth}
-        \centering
-        \figwss{supine.png}{0}{0.00009524954933823035}{\subfigwidth}{xtick={0,0.00002,0.00004,0.00006,0.00008,0.00009}}{(0.1, 0.1) -- (0.09, 0.)}
-        \caption{Supine position.}
-        \label{fig:prone}
-    \end{subfigure}
-    \caption{Distribution of the wall shear stress $\vec{\tau}_w$ magnitude on the corneal endothelium for various postural orientations.}
-\end{figure}
+\input{figure_abstract}
 
 
 
-\section*{Conclusions}
+\section*{Conclusion}
+
+Our findings highlight the crucial interplay of thermal and postural factors in shaping AH dynamics and mechanical stresses within the AC.
+Cooler ocular surface conditions foster higher WSS and uniform cell dispersion, suggesting thermal modulation can improve endothelial cell therapy outcomes.
+By adjusting body orientation and ocular surface temperature, clinicians may guide cell sedimentation and adhesion, enhancing postoperative results in anterior segment procedures.
 
 
-\nocite{*}
-\printbibliography
 
 
 

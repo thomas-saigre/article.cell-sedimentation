@@ -12,3 +12,6 @@
 
 build/*
 src/feelppdb/*
+
+*.pvsm
+*_big.png

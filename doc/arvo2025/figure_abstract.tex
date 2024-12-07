@@ -1,0 +1,120 @@
+%!TeX root=../main.tex
+
+\newcommand{\myplot}[4]{
+    \begin{tikzpicture}
+        \begin{axis}[
+            colorbar,
+            colormap={Rainbow Uniform}{
+                rgb255(0.0cm)=(5,97,254);
+                rgb255(0.023809523809523808cm)=(5,108,247);
+                rgb255(0.047619047619047616cm)=(5,119,239);
+                rgb255(0.07142857142857142cm)=(5,130,232);
+                rgb255(0.09523809523809523cm)=(5,139,222);
+                rgb255(0.11904761904761904cm)=(5,148,212);
+                rgb255(0.14285714285714285cm)=(5,157,202);
+                rgb255(0.16666666666666666cm)=(5,166,191);
+                rgb255(0.19047619047619047cm)=(5,174,179);
+                rgb255(0.21428571428571427cm)=(5,183,167);
+                rgb255(0.23809523809523808cm)=(5,193,153);
+                rgb255(0.2619047619047619cm)=(5,202,140);
+                rgb255(0.2857142857142857cm)=(5,211,126);
+                rgb255(0.30952380952380953cm)=(5,220,109);
+                rgb255(0.3333333333333333cm)=(5,228,91);
+                rgb255(0.35714285714285715cm)=(4,237,74);
+                rgb255(0.38095238095238093cm)=(69,242,39);
+                rgb255(0.40476190476190477cm)=(125,245,28);
+                rgb255(0.42857142857142855cm)=(164,249,11);
+                rgb255(0.4523809523809524cm)=(194,251,8);
+                rgb255(0.47619047619047616cm)=(224,252,5);
+                rgb255(0.5cm)=(254,254,3);
+                rgb255(0.5238095238095238cm)=(254,243,20);
+                rgb255(0.5476190476190477cm)=(254,232,37);
+                rgb255(0.5714285714285714cm)=(254,220,55);
+                rgb255(0.5952380952380952cm)=(254,208,55);
+                rgb255(0.6190476190476191cm)=(254,196,55);
+                rgb255(0.6428571428571429cm)=(254,183,55);
+                rgb255(0.6666666666666666cm)=(254,171,55);
+                rgb255(0.6904761904761905cm)=(254,159,55);
+                rgb255(0.7142857142857143cm)=(254,147,55);
+                rgb255(0.7380952380952381cm)=(254,132,55);
+                rgb255(0.7619047619047619cm)=(254,118,55);
+                rgb255(0.7857142857142857cm)=(254,104,55);
+                rgb255(0.8095238095238095cm)=(253,84,53);
+                rgb255(0.8333333333333334cm)=(251,66,48);
+                rgb255(0.8571428571428571cm)=(252,37,53);
+                rgb255(0.8809523809523809cm)=(242,29,64);
+                rgb255(0.9047619047619048cm)=(230,20,74);
+                rgb255(0.9285714285714286cm)=(218,10,84);
+                rgb255(0.9523809523809523cm)=(203,11,91);
+                rgb255(0.9761904761904762cm)=(189,11,98);
+                rgb255(1.0cm)=(174,12,105);
+            },
+            enlargelimits=false,
+            colorbar horizontal,
+            point meta min=#2,
+            point meta max=#3,
+            axis line style = {draw=none},
+            tick style = {draw=none},
+            xtick = \empty, ytick = \empty,
+            colorbar style={
+                % xlabel style={
+                %     at={(0.5,1.1)},
+                %     anchor=south,
+                % },
+                xlabel = {$\vec{u}$ [\si{\meter\per\second}]},
+                xlabel style={
+                    yshift=1ex, % Adjust this value to reduce the space
+                },
+                height=0.05*\pgfkeysvalueof{/pgfplots/parent axis height},
+                width=0.9*\pgfkeysvalueof{/pgfplots/parent axis width},
+                at={(0.5,-0.02)},
+                anchor=center,
+                tick label style={
+                    font=\footnotesize,
+                    % yshift=0.5ex, % Adjust this value to reduce the space
+                },
+                x tick scale label style={yshift=1ex}
+            },
+            width=\subfigwidth
+        ]
+            \addplotgraphicsnatural[xmin=0, xmax=1, ymin=0, ymax=1]{#1}
+
+            \draw[#4] (-.1, 0.8) -- (0.1, 0.8) node[midway, anchor=south] {$\vec{g}$};
+            \draw[#4] (0.3, 0.5) -- (0.5, 0.5) node[midway, anchor=south] {$\vec{u}$};
+        \end{axis}
+    \end{tikzpicture}
+
+
+}
+
+
+\def\subfigwidth{0.5\textwidth}
+\begin{figure}
+    \centering
+    \subfigure[Supine position with $T_\text{amb}=\SI{25}{\degreeCelsius}$.]{
+        \myplot{flowsupine.png}{6.394491411422713e-9}{0.000025372790645038857}{->}
+    }
+    \subfigure[Prone position with $T_\text{amb}=\SI{25}{\degreeCelsius}$.]{
+        \myplot{flowprone.png}{6.239064596468915e-9}{0.000015184686817409953}{<-}
+    }
+
+    \subfigure[Supine position with $T_\text{amb}=\SI{15}{\degreeCelsius}$.]{
+        \myplot{flowsupine15.png}{8.426742526913508e-9}{0.000036873671901771015}{->}
+    }
+    \subfigure[Prone position with $T_\text{amb}=\SI{15}{\degreeCelsius}$.]{
+        \myplot{flowprone15.png}{8.147417992892589e-9}{0.000018682715387970866}{<-}
+    }
+
+    \caption{AH flow in AC for various orientations and ambient temperatures.}
+    \label{fig:arvo_flows}
+\end{figure}
+
+
+\begin{table}
+    \centering
+    \input{tab_wss}
+    \caption{Evolution of the magnitude of the WSS for different zones of the eye on different regions, for various ambient temperature.}
+    \label{tab:arvo_wss}
+\end{table}
+
+
