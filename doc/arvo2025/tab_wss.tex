@@ -4,17 +4,17 @@
     \node (tab) at (0,0){
         \begin{tblr}{colspec={|c|c|c|c|c|}}
         \hline
-        \SetRow{azure7} \multirow{2}{*}{\textbf{Zone}} & \multirow{2}{*}{\textbf{Orientation}} & \multicolumn{3}{c|}{\textbf{Mean of magnitude of WSS}}\\
+        \SetRow{azure7} \SetCell[r=2]{c} \textbf{Zone} & \SetCell[r=2]{c} \textbf{Orientation} & \SetCell[c=3]{c} \textbf{Mean of magnitude of WSS}\\
         \hline
         \SetRow{azure7}  &  & $T_\text{amb}= 25\si{\celsius}$ & $T_\text{amb}= 15\si{\celsius}$ & $T_\text{amb}= 33\si{\celsius}$\\
         \hline
-        \SetRow{azure9} \multirow{2}{*}{Whole domain} & Prone  & \pgfmathprintnumber{6.40088e-07}~\si{\pascal} & $+72.96~\%$ & $-44.82~\%$ \\
+        \SetRow{azure9} \SetCell[r=2]{c} Whole domain & Prone  & \pgfmathprintnumber{6.40088e-07}~\si{\pascal} & $+72.96~\%$ & $-44.82~\%$ \\
         \SetRow{azure9}                               & Supine & \pgfmathprintnumber{6.77375e-07}~\si{\pascal} & $+81.20~\%$ & $-46.23~\%$ \\
         \hline
-        \multirow{2}{*}{Cornea} & Prone  & \pgfmathprintnumber{2.30063e-07}~\si{\pascal} & $+71.63~\%$ & $-44.55~\%$ \\
-                                & Supine & \pgfmathprintnumber{2.49599e-07}~\si{\pascal} & $\mathbf{+83.40~\%}$ & $\mathbf{-46.89~\%}$ \\
+        \SetCell[r=2]{c} Cornea & Prone  & \pgfmathprintnumber{2.30063e-07}~\si{\pascal} & $+71.63~\%$ & $-44.55~\%$ \\
+                & Supine & \pgfmathprintnumber{2.49599e-07}~\si{\pascal} & $\mathbf{+83.40~\%}$ & $\mathbf{-46.89~\%}$ \\
         \hline
-        \SetRow{azure9} \multirow{2}{*}{Iris} & Prone  & \pgfmathprintnumber{3.17341e-07}~\si{\pascal} & $+73.67~\%$ & $-44.96~\%$ \\
+        \SetRow{azure9} \SetCell[r=2]{c} Iris & Prone  & \pgfmathprintnumber{3.17341e-07}~\si{\pascal} & $+73.67~\%$ & $-44.96~\%$ \\
         \SetRow{azure9}                       & Supine & \pgfmathprintnumber{3.30958e-07}~\si{\pascal} & $+79.76~\%$ & $-46.01~\%$ \\
         \hline
         \end{tblr}
